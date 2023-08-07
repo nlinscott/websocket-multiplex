@@ -48,7 +48,7 @@ namespace WebSocketMultiplexLib
                     return Task.CompletedTask;
                 }
 
-                return SendRawToAsync(sender, data);
+                return SendRawToAsync(s, data);
             });
 
             return Task.WhenAll(sending);
