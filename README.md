@@ -2,6 +2,10 @@
 
 A server side solution to creating multiplexed web socket channels. 
 
+## How to run examples
+
+Run the WebSocketMultiplex project. This has some example Chat / Login services already setup. Then, run two instances of the `ChatApp`. You will be prompted a name in each command window and you can start a chat with yourself.
+
 
 ## solution
 
