@@ -1,0 +1,23 @@
+﻿@page "/chat"
+@inject ChatApp.ChatClient client
+<PageTitle>Chat</PageTitle>
+
+<h1>Chat</h1>
+
+<input id="name" @bind="@Username" type="text"/>
+
+<button class="btn btn-primary" @onclick="Connect">Click me</button>
+
+<div id="messages">
+</div>
+
+@code {
+    private string Username {get;set;}
+
+    private async Task Connect()
+    {
+        await client.Connect("ws://localhost:9000", new ChatApp.Shared.Model.UserModel() { Name = Username });
+
+
+    }
+}
