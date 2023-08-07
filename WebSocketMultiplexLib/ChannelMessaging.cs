@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json;
 using System.Threading.Tasks;
 using WebSocketMultiplexLib.Services;
 using WebSocketMultiplexLib.Services.Channel;
@@ -11,12 +10,14 @@ namespace WebSocketMultiplexLib
     {
         private readonly ISubscriberCollection _subscribers;
         private readonly IClientRegistrar _registrar;
+        private readonly IChannelMessageConverter _messageConverter;
         private readonly byte[] _channelName;
 
-        public ChannelMessaging(ISubscriberCollection subscribers, IClientRegistrar registrar, string channelName)
+        public ChannelMessaging(ISubscriberCollection subscribers, IClientRegistrar registrar, IChannelMessageConverter messageConverter, string channelName)
         {
             _registrar = registrar;
             _subscribers = subscribers;
+            _messageConverter = messageConverter;
             _channelName = System.Text.Encoding.UTF8.GetBytes(channelName);
         }
 
@@ -82,7 +83,7 @@ namespace WebSocketMultiplexLib
 
         private byte[] CreateMessageRaw<T>(T messageObject)
         {
-            byte[] objData = JsonSerializer.SerializeToUtf8Bytes(messageObject);
+            byte[] objData = _messageConverter.ConvertToByteArray(messageObject);
 
             return AppendChannelName(objData);
         }

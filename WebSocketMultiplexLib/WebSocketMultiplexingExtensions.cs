@@ -45,6 +45,13 @@ namespace WebSocketMultiplexLib
         /// </summary>
         public static IServiceCollection AddMultiplexing(this IServiceCollection collection)
         {
+            if(!collection.Any(s => s.ServiceType == typeof(IChannelMessageConverter)))
+            {
+                string warning = "Using default JSON message converter. Implement IChannelMessageConverter and add it to your service collection to override.";
+                Console.WriteLine(warning);
+                collection.AddSingleton<IChannelMessageConverter, JsonChannelMessageConverter>();
+            }
+
             collection.AddSingleton<IClientRegistrar, ClientRegistrar>();
             collection.AddSingleton<IListenerService, ClientListenerService>();
             collection.AddSingleton<IChannelMessageRouter, ChannelMessageRouter>();

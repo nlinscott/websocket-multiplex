@@ -7,16 +7,18 @@ namespace WebSocketMultiplexLib.Services.Channel
     {
         private readonly IDisconnectService _disconnectService;
         private readonly IClientRegistrar _clientRegistrar;
+        private readonly IChannelMessageConverter _channelMessageConverter;
 
-        public ChannelServicesFactory(IDisconnectService disconnectService, IClientRegistrar clientRegistrar)
+        public ChannelServicesFactory(IDisconnectService disconnectService, IClientRegistrar clientRegistrar, IChannelMessageConverter channelMessageConverter)
         {
             _disconnectService = disconnectService;
             _clientRegistrar = clientRegistrar;
+            _channelMessageConverter = channelMessageConverter;
         }
 
         public IChannelServices Create(string channelName, ISubscriberCollection subscribers)
         {
-            IChannelMessaging messaging = new ChannelMessaging(subscribers, _clientRegistrar, channelName);
+            IChannelMessaging messaging = new ChannelMessaging(subscribers, _clientRegistrar, _channelMessageConverter, channelName);
 
             return new ChannelServicesProxy(messaging, _disconnectService);
         }
